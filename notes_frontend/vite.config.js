@@ -2,13 +2,15 @@ import { defineConfig } from 'vite';
 import preact from '@preact/preset-vite';
 
 /**
- * Vite dev server configuration
+ * Vite 6+ dev server configuration
  * - host: true exposes the dev server on all interfaces and permits proxy hostnames.
+ * - allowedHosts: include 'all' AND the workspace proxy host to satisfy stricter environments.
  * - strictPort: true ensures it stays on 3000 (CI/proxy expects this).
  * - origin/hmr: use VITE_PUBLIC_URL when available (for proxied environments),
  *   otherwise fallback to localhost. This avoids host check and HMR websocket issues.
- * - No hardcoded allowedHosts: Vite 6 handles host checks differently; removing
- *   incompatible options prevents connection refusal via proxy hosts.
+ *
+ * Note: This project uses Vite ^6.2.0 (see package.json), so we enable server.host = true and
+ * explicitly list the proxy host 'vscode-internal-22982-qa.qa01.cloud.kavia.ai' in allowedHosts.
  */
 export default defineConfig(() => {
   // Safely read PUBLIC URL only from globalThis (ESLint/Node-safe)
@@ -39,7 +41,11 @@ export default defineConfig(() => {
   return {
     plugins: [preact()],
     server: {
-      host: true, // listen on all addresses and accept any hostname
+      host: true, // Vite 6+: listen on all addresses and accept any hostname
+      // Explicitly allow the proxy/workspace host as requested.
+      // Including 'all' keeps compatibility across environments.
+      // This change was added to resolve dev server host blocking.
+      allowedHosts: ['all', 'vscode-internal-22982-qa.qa01.cloud.kavia.ai'],
       port: 3000,
       strictPort: true,
       cors: true,
