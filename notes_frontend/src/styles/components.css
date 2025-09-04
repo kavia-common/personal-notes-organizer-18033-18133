@@ -1,0 +1,25 @@
+.rte {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-height: 300px;
+}
+.rte-toolbar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px; background: var(--surface-2); border-bottom: 1px solid var(--border);
+}
+.rte-editor { padding: 14px; min-height: 240px; outline: none; }
+.rte-editor:empty:before { content: attr(placeholder); color: var(--text-secondary); }
+
+.tag-input .chips {
+  display: flex; gap: 8px; flex-wrap: wrap; padding: 6px;
+  border: 1px dashed var(--border); border-radius: var(--radius-sm); background: #fcfdff;
+}
+.chip {
+  background: #fff7e0; color: #3f2f00; border: 1px solid #ffe08a;
+  padding: 3px 8px; border-radius: 999px; display: inline-flex; gap: 6px; align-items: center;
+}
+.chip-x { border: none; background: transparent; cursor: pointer; color: #8c6d00; }
+.chip-input { border: none; outline: none; min-width: 120px; flex: 1; padding: 6px; background: transparent; }
